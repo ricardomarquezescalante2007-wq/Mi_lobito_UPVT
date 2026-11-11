@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Mascotita Virtual</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #a8edd9 0%, #fed6e3 100%);
+      --primary-color: #6c5ce7;
+      --card-bg: rgba(255, 255, 255, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 24px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      color: #2d3436;
+      font-size: 1.5rem;
+    }
+
+    /* Pantalla del Lobito */
+    .pet-stage {
+      background: #eef2f7;
+      height: 250px;
+      border-radius: 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border: 3px solid #dfe6e9;
+    }
+
+    /* Elemento Mascota */
+    .pet {
+      width: 130px;
+      height: 130px;
+      background: #74b9ff;
+      border-radius: 50% 50% 45% 45%;
+      position: relative;
+      transition: transform 0.2s, background 0.3s;
+      animation: bounce 2s infinite ease-in-out;
+    }
+
+    /* Orejitas */
+    .pet::before, .pet::after {
+      content: '';
+      position: absolute;
+      top: -15px;
+      width: 35px;
+      height: 45px;
+      background: #0984e3;
+      border-radius: 50% 50% 0 0;
+    }
+    .pet::before { left: 10px; transform: rotate(-15deg); }
+    .pet::after { right: 10px; transform: rotate(15deg); }
+
+    /* Cara */
+    .eyes {
+      position: absolute;
+      top: 40px;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      padding: 0 25px;
+    }
+
+    .eye {
+      width: 18px;
+      height: 18px;
+      background: #2d3436;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .eye::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .mouth {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 10px;
+      border-bottom: 3px solid #2d3436;
+      border-radius: 0 0 10px 10px;
+      transition: all 0.2s;
+    }
+
+    .cheeks {
+      position: absolute;
+      top: 52px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 15px;
+    }
+
+    .cheek {
+      width: 16px;
+      height: 10px;
+      background: #ff7675;
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+
+    /* Estados Animados */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .pet.eating { animation: eat 0.5s 3; }
+    @keyframes eat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .pet.sad {
+      background: #b2bec3;
+    }
+    .pet.sad .mouth {
+      border-bottom: none;
+      border-top: 3px solid #2d3436;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .pet.sick {
+      background: #55efc4;
+    }
+
+    /* Barras de Estado */
+    .stats {
+      margin: 20px 0;
+    }
+
+    .stat-bar {
+      margin-bottom: 12px;
+    }
+
+    .stat-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #636e72;
+      margin-bottom: 4px;
+    }
+
+    .bar-bg {
+      background: #dfe6e9;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 100%;
+      transition: width 0.3s;
+    }
+
+    .fill-hunger { background: #ff7675; }
+    .fill-energy { background: #ffeaa7; }
+    .fill-happy { background: #74b9ff; }
+
+    /* Botones de Control */
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      font-weight: bold;
+      color: #2d3436;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.1s, background 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    .btn-feed { border: 2px solid #ff7675; }
+    .btn-sleep { border: 2px solid #fdcb6e; }
+    .btn-play { border: 2px solid #74b9ff; }
+    .btn-heal { border: 2px solid #55efc4; }
+  </style>
+</head>
+<body>
+
+  <div class="game-card">
+    <div class="header">
+      <h1>Cuidando a Lobito 🐾</h1>
+    </div>
+
+    <div class="pet-stage">
+      <div class="pet" id="pet">
+        <div class="ears"></div>
+        <div class="eyes">
+          <div class="eye"></div>
+          <div class="eye"></div>
+        </div>
+        <div class="cheeks">
+          <div class="cheek"></div>
+          <div class="cheek"></div>
+        </div>
+        <div class="mouth"></div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-bar">
+        <div class="stat-label"><span>Comida 🍗</span><span id="txt-hunger">100%</span></div>
+        <div class="bar-bg"><div class="bar-fill fill-hunger" id="bar-hunger"></div></div>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-label"><span>Energía 💤</span><span id="txt-energy">100%</span></div>
+        <div class="bar-bg"><div class="bar-fill fill-energy" id="bar-energy"></div></div>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-label"><span>Felicidad ❤️</span><span id="txt-happy">100%</span></div>
+        <div class="bar-bg"><div class="bar-fill fill-happy" id="bar-happy"></div></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-feed" onclick="feed()">Alimentar 🍎</button>
+      <button class="btn btn-sleep" onclick="sleep()">Dormir 🌙</button>
+      <button class="btn btn-play" onclick="play()">Jugar ⚽</button>
+      <button class="btn btn-heal" onclick="heal()">Curar 💊</button>
+    </div>
+  </div>
+
+  <script>
+    let stats = { hunger: 100, energy: 100, happy: 100, isSick: false };
+    const pet = document.getElementById('pet');
+
+    function updateUI() {
+      document.getElementById('bar-hunger').style.width = stats.hunger + '%';
+      document.getElementById('txt-hunger').innerText = Math.round(stats.hunger) + '%';
+      
+      document.getElementById('bar-energy').style.width = stats.energy + '%';
+      document.getElementById('txt-energy').innerText = Math.round(stats.energy) + '%';
+
+      document.getElementById('bar-happy').style.width = stats.happy + '%';
+      document.getElementById('txt-happy').innerText = Math.round(stats.happy) + '%';
+
+      // Cambiar expresiones según estado
+      pet.classList.remove('sad', 'sick');
+      if (stats.isSick) {
+        pet.classList.add('sick');
+      } else if (stats.happy < 40 || stats.hunger < 30) {
+        pet.classList.add('sad');
+      }
+    }
+
+    function feed() {
+      if (stats.hunger < 100) {
+        stats.hunger = Math.min(100, stats.hunger + 25);
+        triggerAnim('eating');
+      }
+      updateUI();
+    }
+
+    function sleep() {
+      if (stats.energy < 100) {
+        stats.energy = Math.min(100, stats.energy + 40);
+        stats.hunger = Math.max(0, stats.hunger - 10);
+        triggerAnim('eating');
+      }
+      updateUI();
+    }
+
+    function play() {
+      if (stats.energy > 15) {
+        stats.happy = Math.min(100, stats.happy + 20);
+        stats.energy = Math.max(0, stats.energy - 15);
+        stats.hunger = Math.max(0, stats.hunger - 10);
+        triggerAnim('eating');
+      }
+      updateUI();
+    }
+
+    function heal() {
+      stats.isSick = false;
+      stats.happy = Math.min(100, stats.happy + 15);
+      updateUI();
+    }
+
+    function triggerAnim(className) {
+      pet.classList.add(className);
+      setTimeout(() => pet.classList.remove(className), 1500);
+    }
+
+    // El tiempo pasa y reduce sus necesidades
+    setInterval(() => {
+      stats.hunger = Math.max(0, stats.hunger - 3);
+      stats.energy = Math.max(0, stats.energy - 2);
+      stats.happy = Math.max(0, stats.happy - 2);
+
+      // Probabilidad aleatoria de enfermar si tiene bajas defensas
+      if (stats.hunger < 30 && Math.random() < 0.2) {
+        stats.isSick = true;
+      }
+
+      updateUI();
+    }, 3000);
+
+    updateUI();
+  </script>
+</body>
+</html>
