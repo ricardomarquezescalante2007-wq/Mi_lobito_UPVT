@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Lobito UPVT - Portal Estudiantil</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        upvt: {
+                            navy: '#1E3A8A',
+                            blue: '#2563EB',
+                            light: '#EFF6FF',
+                            accent: '#F59E0B',
+                            dark: '#0F172A',
+                            gold: '#D97706'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- TOP NAVIGATION HEADER -->
+    <header class="bg-upvt-navy text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Left Branding -->
+                <div class="flex items-center space-x-3">
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-200 hover:bg-blue-900 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1 shadow">
+                            <!-- SVG Representation of UPVT Wolf Logo -->
+                            <svg class="w-8 h-8 text-upvt-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-5.45 8-12V6l-8-4z" fill="#1E3A8A" stroke="#2563EB"/>
+                                <path d="M12 7l-3 4h2v4h2v-4h2l-3-4z" fill="#FFFFFF"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-lg font-bold tracking-tight text-white block leading-tight">Mi Lobito <span class="text-upvt-accent">UPVT</span></span>
+                            <span class="text-[10px] text-blue-200 uppercase tracking-widest block font-medium">Universidad Politécnica del Valle de Toluca</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Action Icons & User Profile -->
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <!-- Notifications Dropdown Trigger -->
+                    <div class="relative">
+                        <button id="notif-btn" class="p-2 rounded-full hover:bg-blue-900/60 relative text-blue-100 hover:text-white transition">
+                            <i class="fa-regular fa-bell text-lg"></i>
+                            <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-upvt-navy"></span>
+                        </button>
+                        <!-- Notifications Modal Popover -->
+                        <div id="notif-menu" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-100 py-2 text-slate-800 z-50">
+                            <div class="px-4 py-2 border-b border-slate-100 flex justify-between items-center">
+                                <h4 class="font-semibold text-sm">Notificaciones</h4>
+                                <span class="text-xs bg-blue-100 text-upvt-blue font-medium px-2 py-0.5 rounded-full">2 nuevas</span>
+                            </div>
+                            <div class="divide-y divide-slate-50 max-h-64 overflow-y-auto">
+                                <a href="#" class="block px-4 py-3 hover:bg-slate-50 transition">
+                                    <p class="text-xs font-semibold text-upvt-navy">Evaluación Docente Abierta</p>
+                                    <p class="text-xs text-slate-500 mt-0.5">Recuerda completar la evaluación docente antes del viernes.</p>
+                                    <span class="text-[10px] text-slate-400 mt-1 block">Hace 2 horas</span>
+                                </a>
+                                <a href="#" class="block px-4 py-3 hover:bg-slate-50 transition">
+                                    <p class="text-xs font-semibold text-green-600">Calificación Publicada</p>
+                                    <p class="text-xs text-slate-500 mt-0.5">Se ha cargado la nota del Parcial 2 en Desarrollo Web.</p>
+                                    <span class="text-[10px] text-slate-400 mt-1 block">Ayer</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="h-8 w-px bg-blue-800/80 hidden sm:block"></div>
+
+                    <!-- User Info Card -->
+                    <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('perfil')">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-semibold leading-tight text-white">Erandy Lugo</p>
+                            <p class="text-xs text-blue-200 font-light">Matrícula: 222019482 | ITI4MB</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-blue-600 border-2 border-white/80 overflow-hidden shadow flex items-center justify-center font-bold text-white text-sm bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256');">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY LAYOUT -->
+    <div class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
+
+        <!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="w-full md:w-64 flex-shrink-0 bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 hidden md:block">
+            <div class="mb-4 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100 flex items-center space-x-3">
+                <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                <div>
+                    <span class="text-xs font-semibold text-slate-700 block">Estado: Alumno Activo</span>
+                    <span class="text-[10px] text-slate-500 block">Cuatrimestre Mayo - Ago 2026</span>
+                </div>
+            </div>
+
+            <nav class="space-y-1">
+                <button onclick="switchTab('inicio')" id="nav-inicio" class="nav-item active w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-xl text-upvt-navy bg-blue-50 border-l-4 border-upvt-blue transition">
+                    <i class="fa-solid fa-house w-5 text-center text-upvt-blue"></i>
+                    <span>Inicio</span>
+                </button>
+
+                <button onclick="switchTab('calificaciones')" id="nav-calificaciones" class="nav-item w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-600 hover:text-upvt-navy hover:bg-slate-50 transition">
+                    <i class="fa-solid fa-graduation-cap w-5 text-center"></i>
+                    <span>Mis Calificaciones</span>
+                </button>
+
+                <button onclick="switchTab('horario')" id="nav-horario" class="nav-item w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-600 hover:text-upvt-navy hover:bg-slate-50 transition">
+                    <i class="fa-regular fa-calendar-days w-5 text-center"></i>
+                    <span>Horario</span>
+                </button>
+
+                <button onclick="switchTab('asistencias')" id="nav-asistencias" class="nav-item w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-600 hover:text-upvt-navy hover:bg-slate-50 transition">
+                    <i class="fa-solid fa-user-check w-5 text-center"></i>
+                    <span>Asistencias</span>
+                </button>
+
+                <button onclick="switchTab('tramites')" id="nav-tramites" class="nav-item w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-600 hover:text-upvt-navy hover:bg-slate-50 transition">
+                    <i class="fa-solid fa-file-signature w-5 text-center"></i>
+                    <span>Trámites y Servicios</span>
+                </button>
+
+                <button onclick="switchTab('perfil')" id="nav-perfil" class="nav-item w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium rounded-xl text-slate-600 hover:text-upvt-navy hover:bg-slate-50 transition">
+                    <i class="fa-solid fa-user-gear w-5 text-center"></i>
+                    <span>Perfil</span>
+                </button>
+            </nav>
+
+            <div class="mt-8 pt-4 border-t border-slate-100">
+                <a href="#" class="w-full flex items-center space-x-3 px-4 py-2.5 text-xs font-medium rounded-xl text-red-600 hover:bg-red-50 transition">
+                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- DASHBOARD MAIN CONTENT AREA -->
+        <main class="flex-grow space-y-6">
+
+            <!-- TAB 1: INICIO (DASHBOARD OVERVIEW) -->
+            <div id="tab-inicio" class="tab-content active space-y-6">
+                <!-- Welcome Banner -->
+                <div class="relative bg-gradient-to-r from-upvt-navy to-blue-700 rounded-2xl p-6 text-white shadow-lg overflow-hidden">
+                    <div class="relative z-10 max-w-xl">
+                        <span class="px-3 py-1 bg-white/20 text-white rounded-full text-xs font-semibold tracking-wide uppercase inline-block mb-3 backdrop-blur-md">Ingeniería en Tecnologías de la Información</span>
+                        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">¡Hola de nuevo, Erandy! 🐺</h1>
+                        <p class="text-blue-100 text-sm mt-2 leading-relaxed">Bienvenido a tu portal Mi Lobito. Tienes 3 clases programadas para hoy y 1 trámite en proceso.</p>
+                        <div class="mt-4 flex flex-wrap gap-3">
+                            <button onclick="openModal('modal-justificante')" class="bg-white text-upvt-navy hover:bg-blue-50 px-4 py-2 rounded-xl font-semibold text-xs transition shadow-sm flex items-center space-x-2">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Solicitar Justificante</span>
+                            </button>
+                            <button onclick="switchTab('horario')" class="bg-blue-800/60 hover:bg-blue-800/80 text-white px-4 py-2 rounded-xl font-medium text-xs backdrop-blur-md transition">
+                                Ver Horario de Hoy
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Decorative Graphic Background -->
+                    <div class="absolute -right-6 -bottom-10 opacity-15 pointer-events-none">
+                        <i class="fa-solid fa-shield-cat text-[220px] text-white"></i>
+                    </div>
+                </div>
+
+                <!-- Academic Average & Highlights Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Average Card 1 -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-blue-100 text-upvt-blue rounded-xl flex items-center justify-center font-bold text-xl">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Promedio General</p>
+                            <h3 class="text-2xl font-bold text-slate-800">9.1</h3>
+                            <span class="text-[11px] text-emerald-600 font-medium"><i class="fa-solid fa-arrow-up text-[9px] mr-1"></i>Excelente</span>
+                        </div>
+                    </div>
+
+                    <!-- Average Card 2 -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center font-bold text-xl">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Cuatrimestre Anterior</p>
+                            <h3 class="text-2xl font-bold text-slate-800">9.1</h3>
+                            <span class="text-[11px] text-slate-500 font-medium">4° Cuatrimestre</span>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Card -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-xl">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Asistencia Global</p>
+                            <h3 class="text-2xl font-bold text-slate-800">96%</h3>
+                            <span class="text-[11px] text-emerald-600 font-medium">Sin riesgo de faltas</span>
+                        </div>
+                    </div>
+
+                    <!-- Status Card -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center font-bold text-xl">
+                            <i class="fa-solid fa-book-bookmark"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Asignaturas En Curso</p>
+                            <h3 class="text-2xl font-bold text-slate-800">7</h3>
+                            <span class="text-[11px] text-upvt-blue font-medium">5° Cuatrimestre</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUICK ACCESS SHORTCUTS -->
+                <div>
+                    <h2 class="text-base font-bold text-slate-800 mb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-bolt text-upvt-accent"></i>
+                        <span>Acceso Rápido</span>
+                    </h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <button onclick="switchTab('calificaciones')" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80 hover:border-upvt-blue hover:shadow-md transition text-center group">
+                            <div class="w-10 h-10 mx-auto bg-blue-50 text-upvt-blue rounded-full flex items-center justify-center group-hover:bg-upvt-blue group-hover:text-white transition mb-2">
+                                <i class="fa-solid fa-file-invoice"></i>
+                            </div>
+                            <span class="text-xs font-semibold text-slate-700 block">Kárdex</span>
+                        </button>
+
+                        <button onclick="openModal('modal-inscripcion')" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80 hover:border-upvt-blue hover:shadow-md transition text-center group">
+                            <div class="w-10 h-10 mx-auto bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition mb-2">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <span class="text-xs font-semibold text-slate-700 block">Reinscripción</span>
+                        </button>
+
+                        <button onclick="openModal('modal-justificante')" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80 hover:border-upvt-blue hover:shadow-md transition text-center group">
+                            <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-full flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition mb-2">
+                                <i class="fa-solid fa-notes-medical"></i>
+                            </div>
+                            <span class="text-xs font-semibold text-slate-700 block">Justificantes</span>
+                        </button>
+
+                        <a href="https://elibro.net" target="_blank" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200/80 hover:border-upvt-blue hover:shadow-md transition text-center group">
+                            <div class="w-10 h-10 mx-auto bg-purple-50 text-purple-600 rounded-full flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition mb-2">
+                                <i class="fa-solid fa-book-open-reader"></i>
+                            </div>
+                            <span class="text-xs font-semibold text-slate-700 block">Biblioteca Virtual</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- MAIN DASHBOARD CONTENT GRID (Today's schedule & Announcements) -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- Today's Schedule Widget (2 Cols) -->
+                    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-base">Clases de Hoy</h3>
+                                <p class="text-xs text-slate-500">Miércoles, 11 de Noviembre</p>
+                            </div>
+                            <button onclick="switchTab('horario')" class="text-xs text-upvt-blue font-semibold hover:underline">Ver Horario Completo</button>
+                        </div>
+
+                        <!-- Class List Timeline -->
+                        <div class="space-y-3">
+                            <!-- Class 1 -->
+                            <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/60 flex items-center justify-between hover:bg-blue-50/40 transition">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-center w-16 flex-shrink-0">
+                                        <span class="text-xs font-bold text-upvt-navy block">07:00</span>
+                                        <span class="text-[10px] text-slate-400">09:00 AM</span>
+                                    </div>
+                                    <div class="h-8 w-1 bg-upvt-blue rounded-full"></div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-slate-800">Desarrollo Web Integración</h4>
+                                        <p class="text-xs text-slate-500"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i>Edificio C - Laboratorio L-2</p>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 text-[11px] font-medium bg-emerald-100 text-emerald-700 rounded-full">Finalizada</span>
+                            </div>
+
+                            <!-- Class 2 (Current) -->
+                            <div class="p-4 rounded-xl border-2 border-upvt-blue bg-blue-50/30 flex items-center justify-between relative shadow-sm">
+                                <span class="absolute -top-2.5 right-4 bg-upvt-blue text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">En Curso</span>
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-center w-16 flex-shrink-0">
+                                        <span class="text-xs font-bold text-upvt-navy block">10:00</span>
+                                        <span class="text-[10px] text-slate-400">12:00 PM</span>
+                                    </div>
+                                    <div class="h-8 w-1 bg-amber-500 rounded-full"></div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-upvt-navy">Ingeniería de Software</h4>
+                                        <p class="text-xs text-slate-600"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i>Edificio D - Aula D-12</p>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 text-[11px] font-medium bg-amber-100 text-amber-800 rounded-full">En Aula</span>
+                            </div>
+
+                            <!-- Class 3 -->
+                            <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/60 flex items-center justify-between hover:bg-blue-50/40 transition">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-center w-16 flex-shrink-0">
+                                        <span class="text-xs font-bold text-upvt-navy block">12:30</span>
+                                        <span class="text-[10px] text-slate-400">02:30 PM</span>
+                                    </div>
+                                    <div class="h-8 w-1 bg-slate-300 rounded-full"></div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-slate-800">Ética Profesional y Valores</h4>
+                                        <p class="text-xs text-slate-500"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i>Edificio A - Aula A-04</p>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 text-[11px] font-medium bg-slate-100 text-slate-600 rounded-full">Próxima</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Announcements & Notices Sidebar Widget (1 Col) -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-slate-800 text-base">Avisos Institucionales</h3>
+                                <i class="fa-solid fa-bullhorn text-upvt-accent"></i>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span class="text-[10px] font-semibold text-upvt-blue uppercase tracking-wider block">Servicios Escolares</span>
+                                    <h4 class="text-xs font-bold text-slate-800 mt-0.5">Convocatoria de Becas UPVT 2026-3</h4>
+                                    <p class="text-xs text-slate-500 mt-1">Se abre el periodo de recepción de solicitudes de beca académica.</p>
+                                    <span class="text-[10px] text-slate-400 mt-2 block">10 Nov 2026</span>
+                                </div>
+
+                                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+                                    <span class="text-[10px] font-semibold text-purple-600 uppercase tracking-wider block">Actividades Culturales</span>
+                                    <h4 class="text-xs font-bold text-slate-800 mt-0.5">Torneo Interuniversitario de Ajedrez</h4>
+                                    <p class="text-xs text-slate-500 mt-1">Inscripciones abiertas en la coordinación deportiva.</p>
+                                    <span class="text-[10px] text-slate-400 mt-2 block">08 Nov 2026</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="mt-4 w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition">
+                            Ver Todos los Avisos
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TAB 2: MIS CALIFICACIONES -->
+            <div id="tab-calificaciones" class="tab-content space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">Boleta de Calificaciones</h2>
+                            <p class="text-xs text-slate-500">Periodo Actual: 5° Cuatrimestre (ITI5MB)</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-3 py-2 bg-slate-100 text-slate-700 text-xs font-medium rounded-xl hover:bg-slate-200 transition">
+                                <i class="fa-solid fa-download mr-1"></i> Descargar PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Grades Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600">
+                                    <th class="p-3 font-semibold">Clave</th>
+                                    <th class="p-3 font-semibold">Asignatura</th>
+                                    <th class="p-3 font-semibold text-center">P1</th>
+                                    <th class="p-3 font-semibold text-center">P2</th>
+                                    <th class="p-3 font-semibold text-center">P3</th>
+                                    <th class="p-3 font-semibold text-center">Final</th>
+                                    <th class="p-3 font-semibold text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="p-3 font-medium text-slate-500">ITI-501</td>
+                                    <td class="p-3 font-semibold text-slate-800">Desarrollo Web Profesional</td>
+                                    <td class="p-3 text-center">9.5</td>
+                                    <td class="p-3 text-center">9.0</td>
+                                    <td class="p-3 text-center text-slate-400">-</td>
+                                    <td class="p-3 text-center font-bold text-upvt-navy">9.25</td>
+                                    <td class="p-3 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">Regular</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium text-slate-500">ITI-502</td>
+                                    <td class="p-3 font-semibold text-slate-800">Ingeniería de Software</td>
+                                    <td class="p-3 text-center">10.0</td>
+                                    <td class="p-3 text-center">9.0</td>
+                                    <td class="p-3 text-center text-slate-400">-</td>
+                                    <td class="p-3 text-center font-bold text-upvt-navy">9.50</td>
+                                    <td class="p-3 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">Regular</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium text-slate-500">ITI-503</td>
+                                    <td class="p-3 font-semibold text-slate-800">Base de Datos Avanzadas</td>
+                                    <td class="p-3 text-center">8.5</td>
+                                    <td class="p-3 text-center">9.0</td>
+                                    <td class="p-3 text-center text-slate-400">-</td>
+                                    <td class="p-3 text-center font-bold text-upvt-navy">8.75</td>
+                                    <td class="p-3 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">Regular</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium text-slate-500">ITI-504</td>
+                                    <td class="p-3 font-semibold text-slate-800">Redes de Computadoras</td>
+                                    <td class="p-3 text-center">9.0</td>
+                                    <td class="p-3 text-center">9.0</td>
+                                    <td class="p-3 text-center text-slate-400">-</td>
+                                    <td class="p-3 text-center font-bold text-upvt-navy">9.00</td>
+                                    <td class="p-3 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">Regular</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium text-slate-500">ITI-505</td>
+                                    <td class="p-3 font-semibold text-slate-800">Inglés V</td>
+                                    <td class="p-3 text-center">9.0</td>
+                                    <td class="p-3 text-center">9.5</td>
+                                    <td class="p-3 text-center text-slate-400">-</td>
+                                    <td class="p-3 text-center font-bold text-upvt-navy">9.25</td>
+                                    <td class="p-3 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-semibold">Regular</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: HORARIO -->
+            <div id="tab-horario" class="tab-content space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4">Horario Semestral (5° Cuatrimestre)</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                        <!-- Lunes -->
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                            <h4 class="font-bold text-upvt-navy text-xs uppercase mb-2 text-center border-b border-slate-200 pb-1">Lunes</h4>
+                            <div class="space-y-2 text-[11px]">
+                                <div class="bg-white p-2 rounded border border-slate-200 shadow-xs">
+                                    <p class="font-bold text-slate-800">Desarrollo Web</p>
+                                    <p class="text-slate-500">07:00 - 09:00 | Lab L-2</p>
+                                </div>
+                                <div class="bg-white p-2 rounded border border-slate-200 shadow-xs">
+                                    <p class="font-bold text-slate-800">Base de Datos</p>
+                                    <p class="text-slate-500">09:00 - 11:00 | Lab L-1</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Martes -->
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                            <h4 class="font-bold text-upvt-navy text-xs uppercase mb-2 text-center border-b border-slate-200 pb-1">Martes</h4>
+                            <div class="space-y-2 text-[11px]">
+                                <div class="bg-white p-2 rounded border border-slate-200 shadow-xs">
+                                    <p class="font-bold text-slate-800">Redes de Comp.</p>
+                                    <p class="text-slate-500">07:00 - 09:00 | Lab L-4</p>
+                                </div>
+                                <div class="bg-white p-2 rounded border border-slate-200 shadow-xs">
+                                    <p class="font-bold text-slate-800">Inglés V</p>
+                                    <p class="text-slate-500">11:00 - 13:00 | Aula A-2</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Miércoles -->
+                        <div class="bg-blue-50/60 p-3 rounded-xl border border-upvt-blue/30">
+                            <h4 class="font-bold text-upvt-blue text-xs uppercase mb-2 text-center border-b border-blue-200 pb-1">Miércoles (Hoy)</h4>
+                            <div class="space-y-2 text-[11px]">
+                                <div class="bg-white p-2 rounded border border-slate-200 shadow-xs">
+                                    <p class="font-bold text-slate-800">Desarrollo Web</p>
+                                    <p class="text-slate-500">07:00 - 09:00 | Lab L-2</p>
+                                </div>
+                                <div class="bg-white p-2 rounded border border-upvt-blue shadow-xs">
+                                    <p class="font-bold text-upvt-navy">Ing. Software</p>
+                                    <p class="text-slate-500">10:00 - 12:00 | Aula D-12</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Jueves -->
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                            <h4 class="font-bold text-upvt-navy text-xs uppercase mb-2 text-center border-b border-slate-200 pb-1">Jueves</h4>
+                            <div class="space-y-2 text-[11px]">
+                                <div class="bg-white p-2 rounded border border-slate-200 shadow-xs">
+                                    <p class="font-bold text-slate-800">Base de Datos</p>
+                                    <p class="text-slate-500">07:00 - 09:00 | Lab L-1</p>
+                                </div>
+                                <div class="bg-white p-2 rounded border border-slate-200 shadow-xs">
+                                    <p class="font-bold text-slate-800">Ética Prof.</p>
+                                    <p class="text-slate-500">09:00 - 11:00 | Aula A-4</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Viernes -->
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                            <h4 class="font-bold text-upvt-navy text-xs uppercase mb-2 text-center border-b border-slate-200 pb-1">Viernes</h4>
+                            <div class="space-y-2 text-[11px]">
+                                <div class="bg-white p-2 rounded border border-slate-200 shadow-xs">
+                                    <p class="font-bold text-slate-800">Redes de Comp.</p>
+                                    <p class="text-slate-500">08:00 - 10:00 | Lab L-4</p>
+                                </div>
+                                <div class="bg-white p-2 rounded border border-slate-200 shadow-xs">
+                                    <p class="font-bold text-slate-800">Tutorías</p>
+                                    <p class="text-slate-500">10:00 - 11:00 | Aula D-12</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: ASISTENCIAS -->
+            <div id="tab-asistencias" class="tab-content space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+                    <h2 class="text-xl font-bold text-slate-800 mb-2">Registro de Asistencias</h2>
+                    <p class="text-xs text-slate-500 mb-6">Porcentaje global mínimo requerido: 80%</p>
+
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-xl border border-slate-100 bg-slate-50 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-semibold text-sm text-slate-800">Desarrollo Web Integración</h4>
+                                <p class="text-xs text-slate-500">28 de 30 horas asistidas</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-lg font-bold text-emerald-600">93%</span>
+                                <div class="w-24 bg-slate-200 h-2 rounded-full overflow-hidden mt-1">
+                                    <div class="bg-emerald-500 h-full" style="width: 93%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl border border-slate-100 bg-slate-50 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-semibold text-sm text-slate-800">Ingeniería de Software</h4>
+                                <p class="text-xs text-slate-500">30 de 30 horas asistidas</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-lg font-bold text-emerald-600">100%</span>
+                                <div class="w-24 bg-slate-200 h-2 rounded-full overflow-hidden mt-1">
+                                    <div class="bg-emerald-500 h-full" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: TRÁMITES -->
+            <div id="tab-tramites" class="tab-content space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4">Trámites y Servicios Escolares</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl border border-slate-200/80 hover:border-upvt-blue transition">
+                            <h4 class="font-bold text-slate-800 text-sm">Constancia de Estudios</h4>
+                            <p class="text-xs text-slate-500 mt-1">Solicitud de constancia con o sin historial de calificaciones.</p>
+                            <button onclick="alert('Solicitud enviada a Ventanilla')" class="mt-3 px-3 py-1.5 bg-upvt-navy text-white text-xs font-medium rounded-lg">Solicitar ($50 MXN)</button>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-200/80 hover:border-upvt-blue transition">
+                            <h4 class="font-bold text-slate-800 text-sm">Seguro Facultativo (IMSS)</h4>
+                            <p class="text-xs text-slate-500 mt-1">Descarga de alta de Seguro Social de estudiantes.</p>
+                            <button onclick="alert('Descargando comprobante IMSS...')" class="mt-3 px-3 py-1.5 bg-upvt-navy text-white text-xs font-medium rounded-lg">Descargar Alta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: PERFIL -->
+            <div id="tab-perfil" class="tab-content space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-16 h-16 rounded-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256');"></div>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">Erandy Lugo</h2>
+                            <p class="text-xs text-slate-500">Matrícula: 222019482 | Carrera: ITI</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                        <div class="p-3 bg-slate-50 rounded-xl">
+                            <span class="text-slate-400 block font-medium">Correo Institucional</span>
+                            <span class="font-bold text-slate-700">al222019482@upvt.edu.mx</span>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl">
+                            <span class="text-slate-400 block font-medium">Plan de Estudios</span>
+                            <span class="font-bold text-slate-700">Ingeniería en Tecnologías de la Información 2022</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL: JUSTIFICANTES -->
+    <div id="modal-justificante" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal('modal-justificante')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">Solicitar Justificante Falta</h3>
+            <p class="text-xs text-slate-500 mb-4">Adjunta tu comprobante médico u oficial para validar tu inasistencia.</p>
+            <form onsubmit="event.preventDefault(); alert('Justificante enviado correctamente'); closeModal('modal-justificante');" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Fecha de Falta</label>
+                    <input type="date" required class="w-full border border-slate-300 rounded-xl p-2.5 outline-none focus:border-upvt-blue">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Motivo</label>
+                    <textarea rows="3" placeholder="Describe brevemente el motivo de la falta..." required class="w-full border border-slate-300 rounded-xl p-2.5 outline-none focus:border-upvt-blue"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-upvt-navy hover:bg-blue-900 text-white font-semibold rounded-xl transition">Enviar Solicitud</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: INSCRIPCIÓN -->
+    <div id="modal-inscripcion" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-center">
+            <button onclick="closeModal('modal-inscripcion')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-check text-xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">Reinscripción Cuatrimestral</h3>
+            <p class="text-xs text-slate-500 mb-4">Tu carga académica para el periodo 2026-3 está pre-aprobada por contar con promedio regular de 9.1.</p>
+            <button onclick="closeModal('modal-inscripcion'); alert('Comprobante de reinscripción generado');" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs transition">Confirmar y Generar Ficha</button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT FOR INTERACTION -->
+    <script>
+        // Tab Switcher Logic
+        function switchTab(tabId) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            const targetTab = document.getElementById('tab-' + tabId);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+
+            // Update Nav Item active styling
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active', 'bg-blue-50', 'text-upvt-navy', 'border-l-4', 'border-upvt-blue');
+                item.classList.add('text-slate-600');
+            });
+
+            const activeNav = document.getElementById('nav-' + tabId);
+            if (activeNav) {
+                activeNav.classList.add('active', 'bg-blue-50', 'text-upvt-navy', 'border-l-4', 'border-upvt-blue');
+                activeNav.classList.remove('text-slate-600');
+            }
+
+            // Scroll top smooth
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Modal Helpers
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // Notification Toggle
+        const notifBtn = document.getElementById('notif-btn');
+        const notifMenu = document.getElementById('notif-menu');
+
+        notifBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', () => {
+            if (!notifMenu.classList.contains('hidden')) {
+                notifMenu.classList.add('hidden');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
