@@ -1,0 +1,42 @@
+:host {
+  --ion-background-color: #121212;
+}
+
+.title-orange {
+  color: #ff6600;
+  font-weight: bold;
+}
+
+.banner-info {
+  color: #b0b0b0;
+  font-size: 0.95rem;
+}
+
+.game-card {
+  background-color: #1e1e1e;
+  border-left: 4px solid #ff6600;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .game-icon {
+    font-size: 2rem;
+    color: #ff6600;
+  }
+
+  .card-title {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  p {
+    color: #cccccc;
+    font-size: 0.9rem;
+  }
+}

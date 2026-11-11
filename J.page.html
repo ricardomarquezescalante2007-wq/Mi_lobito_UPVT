@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title class="ion-text-center title-orange">
+      Lobito UPVT - Minijuegos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding dark-bg">
+  <ion-header collapse="condense">
+    <ion-toolbar color="dark">
+      <ion-title size="large" class="title-orange">Minijuegos Éticos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Subtítulo / Banner de presentación -->
+  <div class="banner-info ion-text-center ion-margin-bottom">
+    <p>Desarrolla tus habilidades y valores profesionales a través de dilemas e interactividades.</p>
+  </div>
+
+  <!-- Grid de Tarjetas de Juegos -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let juego of listaJuegos">
+        <ion-card class="game-card">
+          <ion-card-header>
+            <div class="card-top">
+              <ion-badge color="warning">{{ juego.categoria }}</ion-badge>
+              <ion-icon [name]="juego.icono" class="game-icon"></ion-icon>
+            </div>
+            <ion-card-title class="card-title">{{ juego.titulo }}</ion-card-title>
+            <ion-card-subtitle>{{ juego.nivel }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>{{ juego.descripcion }}</p>
+            <ion-button expand="block" shape="round" color="warning" class="ion-margin-top" (click)="jugar(juego.id)">
+              <ion-icon slot="start" name="play-outline"></ion-icon>
+              {{ juego.textoBoton }}
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
