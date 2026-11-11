@@ -241,17 +241,7 @@
                         </div>
                     </div>
 
-                    <!-- Attendance Card -->
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-xl">
-                            <i class="fa-solid fa-user-check"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-medium">Asistencia Global</p>
-                            <h3 class="text-2xl font-bold text-slate-800">96%</h3>
-                            <span class="text-[11px] text-emerald-600 font-medium">Sin riesgo de faltas</span>
-                        </div>
-                    </div>
+                  
 
                     <!-- Status Card -->
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center space-x-4">
@@ -680,60 +670,6 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT FOR INTERACTION -->
-    <script>
-        // Tab Switcher Logic
-        function switchTab(tabId) {
-            // Hide all tabs
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
-
-            // Show selected tab
-            const targetTab = document.getElementById('tab-' + tabId);
-            if (targetTab) {
-                targetTab.classList.add('active');
-            }
-
-            // Update Nav Item active styling
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.classList.remove('active', 'bg-blue-50', 'text-upvt-navy', 'border-l-4', 'border-upvt-blue');
-                item.classList.add('text-slate-600');
-            });
-
-            const activeNav = document.getElementById('nav-' + tabId);
-            if (activeNav) {
-                activeNav.classList.add('active', 'bg-blue-50', 'text-upvt-navy', 'border-l-4', 'border-upvt-blue');
-                activeNav.classList.remove('text-slate-600');
-            }
-
-            // Scroll top smooth
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Modal Helpers
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-
-        // Notification Toggle
-        const notifBtn = document.getElementById('notif-btn');
-        const notifMenu = document.getElementById('notif-menu');
-
-        notifBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            notifMenu.classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', () => {
-            if (!notifMenu.classList.contains('hidden')) {
-                notifMenu.classList.add('hidden');
-            }
-        });
 
         // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
